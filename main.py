@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from .routers import titles
+from app.routers import titles
 app = FastAPI()
 
 app.include_router(titles.router)

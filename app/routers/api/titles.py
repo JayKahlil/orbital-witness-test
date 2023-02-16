@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 
-from .models.full_title import FullTitle
-from .models.titles_list import TitlesList
-from ..handlers.title_handler import list_titles, get_title_by_id
+from app.routers.models.full_title import FullTitle
+from app.routers.models.titles_list import TitlesList
+from app.handlers.title_handler import list_titles, get_title_by_id
 
 router = APIRouter(
     prefix="/api/titles",

@@ -37,6 +37,14 @@ The swagger UI can be used to make calls to the API directly from the documentat
 
 [ReDoc](http://127.0.0.1:8000/redoc)
 
+## GUI
+
+I have created a simple frontend GUI for the system using Jinja2 which can be found at `http://127.0.0.1:8000/gui/titles`.
+In order to keep it simple I have not styled it or provided an interface to the sorting or filtering, though these features can
+still be accessed via query parameter the same as the API.
+
+In a larger system I would likely create this frontend in a separate project and use HTTP requests to call the API.
+
 ## Notes
 
 - `test_list_titles_second_page_empty` demonstrates that when paging beyond the limit of

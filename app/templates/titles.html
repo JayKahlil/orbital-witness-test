@@ -1,0 +1,26 @@
+<html>
+<head>
+    <title>Titles</title>
+</head>
+<body>
+    <table>
+        {% for title in titles %}
+          <tr>
+              <td>{{ title['id'] }}</td>
+              <td><a href="{{ title['id'] }}">{{ title['title_number'] }}</a></td>
+              <td>{{ title['title_class'] }}</td>
+          </tr>
+        {% endfor %}
+    </table>
+
+    {% if page > 1 %}
+        <a href="./?_page={{ page - 1}}&_limit={{ limit }}">Previous page</a>
+    {% endif %}
+
+    {% if page * limit < total_titles %}
+        <a href="./?_page={{ page + 1}}&_limit={{ limit }}">Next page</a>
+    {% endif %}
+
+    <div>Showing {{ ((page - 1) * limit) + 1 }} to {{ ((page) * limit) }} out of {{ total_titles }} available titles.</div>
+</body>
+</html>

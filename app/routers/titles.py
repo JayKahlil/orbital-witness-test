@@ -1,7 +1,8 @@
 from fastapi import APIRouter
 
+from .models.full_title import FullTitle
 from .models.titles_list import TitlesList
-from ..handlers.title_handler import list_titles
+from ..handlers.title_handler import list_titles, get_title_by_id
 
 router = APIRouter(
     prefix="/api/titles",
@@ -9,7 +10,7 @@ router = APIRouter(
 )
 
 
-@router.get("/")
+@router.get("/", responses={400: {"description": "Invalid request configuration"}})
 def get_titles(
         _page: int = 1, _limit: int = 10, _sort: str = "id", _order: str = "asc",
         title_class: str | None = None) -> TitlesList:
@@ -18,3 +19,8 @@ def get_titles(
     response = TitlesList(titles=titles, page=_page, page_size=_limit, total_titles=total_titles)
 
     return response
+
+
+@router.get("/{id}", responses={404: {"description": "Title not found"}})
+def get(id: str) -> FullTitle:
+    return get_title_by_id(id)

@@ -58,3 +58,13 @@ def list_titles(page: int, limit: int, sort: str, order: str, title_class: str =
         del title["content"]
 
     return paged_titles, len(title_data)
+
+
+def get_title_by_id(title_id: str):
+    title_data = get_title_data()
+
+    for title in title_data:
+        if title['id'] == title_id:
+            return title
+
+    raise HTTPException(status_code=404, detail=f"Title with ID {title_id} not found")

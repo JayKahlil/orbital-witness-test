@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from fastapi import HTTPException
 
-from app.handlers.title_handler import list_titles
+from app.handlers.title_handler import list_titles, get_title_by_id
 
 
 def get_mocked_data():
@@ -128,3 +128,27 @@ class TestTitleHandler(unittest.TestCase):
 
         self.assertEqual(context.exception.detail, "Sort type must be 'id' or 'title_number'")
         self.assertEqual(context.exception.status_code, 400)
+
+    @patch('app.handlers.title_handler.get_title_data')
+    def test_get_title_by_id(self, mock_get_title_data):
+        mock_get_title_data.return_value = get_mocked_data()
+        expected = {
+            "id": "1",
+            "title_number": "GP51",
+            "title_class": "Leasehold",
+            "content": "more test content"
+        }
+
+        title = get_title_by_id("1")
+
+        self.assertEqual(title, expected)
+
+    @patch('app.handlers.title_handler.get_title_data')
+    def test_get_title_by_id_not_found(self, mock_get_title_data):
+        mock_get_title_data.return_value = get_mocked_data()
+
+        with self.assertRaises(HTTPException) as context:
+            get_title_by_id("3")
+
+        self.assertEqual(context.exception.detail, "Title with ID 3 not found")
+        self.assertEqual(context.exception.status_code, 404)

@@ -4,10 +4,30 @@ from app.dependencies.data_store import get_title_data
 
 
 def _filter_titles(titles: list, filter_key: str, filter_value: str):
+    """
+    Filter the list of titles to include only those which have the key value pair specified.
+
+    :param titles: The list of JSON titles to filter.
+    :param filter_key: The key on which the filter.
+    :param filter_value: The value on which to filter.
+    :return: A subset of the titles list containing only those that match the key value pair.
+    """
     return [title for title in titles if title[filter_key] == filter_value]
 
 
 def _sort_titles(titles: list, sort: str, order: str):
+    """
+    Sort in place for the provided list of titles based on a chosen key and order.
+
+    The list is sorted by the primarily by the first "sort" key and then any ties are broken by the second "sort"
+    key if provided.
+
+    The number of "sort" keys must match the number of "order" values.
+
+    :param titles: A list of JSON titles.
+    :param sort: A comma separated list of keys to sort by. Valid values: 'id' and 'title_number'.
+    :param order: A comma separated list of orders to sort by. Valid values: 'asc' and 'desc'.
+    """
     sort_split = sort.split(",")
     order_split = order.split(",")
 
@@ -50,6 +70,7 @@ def list_titles(page: int, limit: int, sort: str, order: str, title_class: str =
 
     _sort_titles(title_data, sort, order)
 
+    # Get a sub list of titles based on the provided paging information
     start = (page - 1) * limit
     end = start + limit
     paged_titles = title_data[start:end]
@@ -57,10 +78,16 @@ def list_titles(page: int, limit: int, sort: str, order: str, title_class: str =
     for title in paged_titles:
         del title["content"]
 
+    # Return the requested, paged titles and a count of all available titles which match the filter
     return paged_titles, len(title_data)
 
 
 def get_title_by_id(title_id: str):
+    """
+    Return a single title based on the title ID.
+    :param title_id: The string ID of the title.
+    :return: A JSON representation of the title.
+    """
     title_data = get_title_data()
 
     for title in title_data:
